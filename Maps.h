@@ -15,8 +15,11 @@ class Maps {
 private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
-    DataReaderServer* server1 = new DataReaderServer();
+    DataReaderServer* server1 ;
 public:
+    Maps(){
+        this->server1 = new DataReaderServer((this->getSymbolMap()));
+    }
     void setSymbel(string var, double value);
     double getSymbol(string var);
     Command* getCommand(string comamnd);

@@ -51,6 +51,7 @@ int DataReaderServer:: createSock(int port, int time){
     this->time=time;
 
     accept();
+    return 0;
 }
 
 
@@ -82,6 +83,10 @@ string DataReaderServer::readFromSock(){
         cout << buffer;
     }
 
+    vector<double> buffSplit = this->split(buffer);
+    this->setMapPath(buffSplit);
+
+
     return "";
 
 }
@@ -96,6 +101,79 @@ string DataReaderServer::getPath(string var) {
     }
     return "";
 }
+
+void DataReaderServer::buildMap() {
+    this->pathRead.insert(pair<string,double>("/instrumentation/airspeed-indicator/indicated-speed-kt",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/altimeter/indicated-altitude-ft",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/altimeter/pressure-alt-ft",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/attitude-indicator/indicated-pitch-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/attitude-indicator/indicated-roll-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/attitude-indicator/internal-pitch-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/attitude-indicator/internal-roll-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/encoder/indicated-altitude-ft",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/encoder/pressure-alt-ft",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/gps/indicated-altitude-ft",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/gps/indicated-ground-speed-kt",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/gps/indicated-vertical-speed",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/heading-indicator/indicated-heading-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/magnetic-compass/indicated-heading-deg",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/slip-skid-ball/indicated-slip-skid",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/turn-indicator/indicated-turn-rate",0));
+    this->pathRead.insert(pair<string,double>("/instrumentation/vertical-speed-indicator/indicated-speed-fpm",0));
+    this->pathRead.insert(pair<string,double>("/controls/flight/aileron",0));
+    this->pathRead.insert(pair<string,double>("/controls/flight/elevator",0));
+    this->pathRead.insert(pair<string,double>("/controls/flight/rudder",0));
+    this->pathRead.insert(pair<string,double>("/controls/flight/flaps",0));
+    this->pathRead.insert(pair<string,double>("/controls/engines/engine/throttle",0));
+    this->pathRead.insert(pair<string,double>("/engines/engine/rpm",0));
+}
+
+vector<double> DataReaderServer::split(string buff) {
+    vector<double> info;
+    size_t pos = 0;
+    string delimiter = " ";
+    while ((pos = buff.find(delimiter)) != string::npos) {
+        info.push_back(stod(buff.substr(0, pos)));
+        buff.erase(0, pos + delimiter.length());
+    }
+    info.push_back(stod(buff.substr(0, pos)));
+    return info;
+}
+
+void DataReaderServer::setMapPath(vector<double> vector1) {
+
+    this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt")=vector1[0];
+    this->pathRead.at("/instrumentation/altimeter/indicated-altitude-ft")=vector1[1];
+    this->pathRead.at("/instrumentation/altimeter/pressure-alt-ft")=vector1[2];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-pitch-deg")=vector1[3];
+    this->pathRead.at("/instrumentation/attitude-indicator/indicated-roll-deg")=vector1[4];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-pitch-deg")=vector1[5];
+    this->pathRead.at("/instrumentation/attitude-indicator/internal-roll-deg")=vector1[6];
+    this->pathRead.at("/instrumentation/encoder/indicated-altitude-ft")=vector1[7];
+    this->pathRead.at("/instrumentation/encoder/pressure-alt-ft")=vector1[8];
+    this->pathRead.at("/instrumentation/gps/indicated-altitude-ft")=vector1[9];
+    this->pathRead.at("/instrumentation/gps/indicated-ground-speed-kt")=vector1[10];
+    this->pathRead.at("/instrumentation/gps/indicated-vertical-speed")=vector1[11];
+    this->pathRead.at("/instrumentation/heading-indicator/indicated-heading-deg")=vector1[12];
+    this->pathRead.at("/instrumentation/magnetic-compass/indicated-heading-deg")=vector1[13];
+    this->pathRead.at("/instrumentation/slip-skid-ball/indicated-slip-skid")=vector1[14];
+    this->pathRead.at("/instrumentation/turn-indicator/indicated-turn-rate")=vector1[15];
+    this->pathRead.at("/instrumentation/vertical-speed-indicator/indicated-speed-fpm")=vector1[16];
+    this->pathRead.at("/controls/flight/aileron")=vector1[17];
+    this->pathRead.at("/controls/flight/elevator")=vector1[18];
+    this->pathRead.at("/controls/flight/rudder")=vector1[19];
+    this->pathRead.at("/controls/flight/flaps")=vector1[20];
+    this->pathRead.at("/controls/engines/engine/throttle")=vector1[21];
+    this->pathRead.at("/engines/engine/rpm")=vector1[22];
+
+}
+
+void DataReaderServer::updateMap() {
+
+
+}
+
+
 
 
 

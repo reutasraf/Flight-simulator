@@ -11,7 +11,7 @@ int EqualCommand::doCommand(vector<string> list1, map<string, double> *map1, int
     }
 
     string s = "set /breaks/ 0";
-    char* buffer = s.toCHar*();
+    //char* buffer = s.toCHar*();
 
     return 3;
 }
