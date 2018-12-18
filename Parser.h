@@ -6,13 +6,15 @@
 #define FLIGHT_PARSER_H
 
 #include "Maps.h"
+#include <map>
 
 
 class Parser {
 private:
-    Maps maps;
+    Maps* maps;
 public:
 
+    void interpLine(vector<string>);
 
 
 };

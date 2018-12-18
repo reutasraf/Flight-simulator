@@ -12,8 +12,8 @@ using namespace std;
 
 class lexer1 {
 
-    list<string> lexer(string);
-    list<string> readFromFile(string fileName);
+    vector<string> lexer(string);
+    vector<string> readFromFile(string fileName);
 
 };
 

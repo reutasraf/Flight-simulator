@@ -3,3 +3,17 @@
 //
 
 #include "Parser.h"
+
+void Parser::interpLine(vector<string> vector1) {
+    for(int i = 0;i<vector1.size();i++){
+        //for the vars equal.
+        int jump;
+        if(maps->getSymbolMap()->count(vector1[i])==1){
+            jump =maps->getCommand("equal")->doCommand(vector1,this->maps->getSymbolMap(),i);
+        } else{
+            jump =maps->getCommand(vector1[i])->doCommand(vector1,this->maps->getSymbolMap(),i);
+        }
+        i = i+jump;
+    }
+
+}

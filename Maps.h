@@ -7,7 +7,7 @@
 
 #include <map>
 #include <string>
-#include "command.h"
+#include "Command.h"
 using namespace std;
 
 
@@ -15,11 +15,13 @@ class Maps {
 private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
+    DataReaderServer* server1 = new DataReaderServer();
 public:
     void setSymbel(string var, double value);
     double getSymbol(string var);
     Command* getCommand(string comamnd);
-
+    map<string,double >* getSymbolMap();
+    void initMapCom();
 
 };
 

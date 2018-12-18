@@ -8,9 +8,9 @@
 #include <list>
 
 using namespace std;
-list<string> lexer1::lexer(string buffer) {
+vector<string> lexer1::lexer(string buffer) {
 
-    list<string> info;
+    vector<string> info;
     size_t pos = 0;
     string delimiter = " ";
     while ((pos = buffer.find(delimiter)) != string::npos) {
@@ -25,8 +25,8 @@ list<string> lexer1::lexer(string buffer) {
  * @param fileName
  * @return
  */
-list<string> lexer1:: readFromFile(string fileName){
-    list<string> info;
+vector<string> lexer1:: readFromFile(string fileName){
+    /*list<string> info;
     ifstream myFile;
     string buffer;
     myFile.open(fileName, ifstream::in | ifstream::app);
@@ -43,7 +43,7 @@ list<string> lexer1:: readFromFile(string fileName){
         info = line;
         line.clear();
     }
-    return info;
+    return info;*/
 }
 
 

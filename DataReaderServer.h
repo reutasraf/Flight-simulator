@@ -11,17 +11,24 @@
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-
-#include <string.h>
-
 #include <sys/socket.h>
-
+#include <string>
+#include <map>
+using namespace std;
 
 class DataReaderServer {
 private:
-    struct sockaddr_in socket;
+    struct sockaddr_in m_socket;
+    int sock_fd, client_sock_fd;
+    double time;
+    map<string, string>* mapPath;
 public:
+    DataReaderServer() = default;
     int createSock(int num1, int num2);
+    string readFromSock();
+    void addPath(string var,string path);
+    void accept();
+    string getPath(string var);
     //struct sockaddr_in getSock();
 
 };
