@@ -31,6 +31,7 @@ private:
 public:
     DataReaderServer(map<string,double >* realMap){
         this->realMap = realMap;
+        this->mapPath = new map<string,string>;
         buildMap();
     }
     int createSock(int num1, int num2);

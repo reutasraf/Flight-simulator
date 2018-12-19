@@ -12,18 +12,14 @@
 #include <string>
 #include <map>
 #include "Command.h"
+#include "DataClient.h"
 using namespace std;
 
 class ConnectCommand: public Command {
-private:
-    struct sockaddr_in m_socket;
-    int sock_fd, client_sock_fd;
 
 public:
-    ConnectCommand(DataReaderServer* server2):Command(server2){}
-    int createSock(int num1, int num2);
-    void set(string path);
-    virtual int doCommand(vector<string> list1,map<string, double>* map1,int index);
+    ConnectCommand(DataReaderServer* server5,DataClient* dataClient1):Command(server5,dataClient1){}
+    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
 
 
 };

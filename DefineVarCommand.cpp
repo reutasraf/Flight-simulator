@@ -3,7 +3,7 @@
 #include "DefineVarCommand.h"
 #include <string>
 using namespace std;
-int DefineVarCommand::doCommand(vector<string> list1,map<string, double>* map1,int index){
+int DefineVarCommand::doCommand(vector<vector<string>> list1,map<string, double>* map1,int index){
     string temp = list1[index+3];
     if(temp.compare("bind")==0){
         //list1.pop_front();
@@ -12,7 +12,7 @@ int DefineVarCommand::doCommand(vector<string> list1,map<string, double>* map1,i
         //list1.pop_front();
         this->server1->addPath(nameVar,list1[index+4]);
         //list1.pop_front();
-        this->server1->readFromSock();
+        this->server1->updateMap();
         return 5;
     }else{
         temp = list1[index+1];
@@ -32,7 +32,7 @@ int DefineVarCommand::doCommand(vector<string> list1,map<string, double>* map1,i
             if(map1->count(temp)==1){
                 map1->insert(pair<string, double>(var,map1->at(temp)));
             } else{
-                ////what to do?? אין את זה במפה וזה משתנה מה עושייייםםםם
+                __throw_bad_exception();
             }
             //if it is a number
         } else{

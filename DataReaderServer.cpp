@@ -15,6 +15,7 @@
 #include <string.h>
 
 #include <sys/socket.h>
+using namespace std;
 
 int DataReaderServer:: createSock(int port, int time){
     int portno;
@@ -69,24 +70,25 @@ void DataReaderServer::accept()
 }
 
 string DataReaderServer::readFromSock(){
-//todo while
-    char buffer[1000];
-    ssize_t bytes_read;
-    bytes_read = read(this->client_sock_fd, buffer, 999);
-    if (bytes_read < 0) {
-        // TODO error
-    }   else if (bytes_read == 0)   {
-        // TODO connection closed
-        int y = 0;
-    } else  {
-        buffer[bytes_read] = NULL;
-        cout << buffer;
+    //read and update data.
+    while (true){
+        char buffer[1000];
+        ssize_t bytes_read;
+        bytes_read = read(this->client_sock_fd, buffer, 999);
+        if (bytes_read < 0) {
+            __throw_bad_exception();
+        }   else if (bytes_read == 0)   {
+            // TODO connection closed
+            int y = 0;
+        } else  {
+            buffer[bytes_read] = NULL;
+            cout << buffer;
+        }
+
+        vector<double> buffSplit = this->split(buffer);
+        this->setMapPath(buffSplit);
+        updateMap();
     }
-
-    vector<double> buffSplit = this->split(buffer);
-    this->setMapPath(buffSplit);
-
-
     return "";
 
 }
@@ -131,7 +133,7 @@ void DataReaderServer::buildMap() {
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
     size_t pos = 0;
-    string delimiter = " ";
+    string delimiter = ",";
     while ((pos = buff.find(delimiter)) != string::npos) {
         info.push_back(stod(buff.substr(0, pos)));
         buff.erase(0, pos + delimiter.length());
@@ -170,6 +172,13 @@ void DataReaderServer::setMapPath(vector<double> vector1) {
 
 void DataReaderServer::updateMap() {
 
+    map<string,string>::iterator it=this->mapPath->begin();
+    for(it; it!=this->mapPath->end();++it){
+       string path = (*it).second;
+       string varName = (*it).first;
+       double val = this->pathRead.at(path);
+       this->realMap->at(varName) = val;
+    }
 
 }
 

@@ -9,18 +9,22 @@
 #include <map>
 #include <list>
 #include "DataReaderServer.h"
+#include "DataClient.h"
+
 using namespace std;
 
 class Command
 {
 protected:
     DataReaderServer* server1;
+    DataClient* dataClient;
 
 public:
-    Command(DataReaderServer* server2){
+    Command(DataReaderServer* server2,DataClient* dataClient1){
         this->server1 = server2;
+        this->dataClient = dataClient1;
     }
-    virtual int doCommand(vector<string> list1,map<string, double>* map1,int index)=0;
+    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index)=0;
 };
 
 

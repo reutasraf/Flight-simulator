@@ -8,6 +8,7 @@
 #include <map>
 #include <string>
 #include "Command.h"
+#include "DataClient.h"
 using namespace std;
 
 
@@ -16,15 +17,18 @@ private:
     map<string,double > symbolTable;
     map<string, Command*> commandMap;
     DataReaderServer* server1 ;
+    DataClient* dataClient;
 public:
-    Maps(){
+    /*Maps(){
         this->server1 = new DataReaderServer((this->getSymbolMap()));
-    }
+    }*/
     void setSymbel(string var, double value);
     double getSymbol(string var);
     Command* getCommand(string comamnd);
     map<string,double >* getSymbolMap();
     void initMapCom();
+    void setServer(DataReaderServer* dataReaderServer,DataClient* dataClient1 );
+
 
 };
 
