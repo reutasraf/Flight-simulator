@@ -7,8 +7,8 @@
 
 class openServerCommand: public Command{
 private:
-    int port;
-    int time;
+    double port;
+    double time;
 public:
    //int doCommand(list<string>);
    virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);

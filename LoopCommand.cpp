@@ -1,6 +1,3 @@
-//
-// Created by reut on 18/12/18.
-//
 
 #include "LoopCommand.h"
 #include <string>
