@@ -34,7 +34,7 @@ public:
         this->mapPath = new map<string,string>;
         buildMap();
     }
-    int createSock(int num1, int num2);
+    int createSock(double num1, double num2);
     string readFromSock();
     void addPath(string var,string path);
     void accept();

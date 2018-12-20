@@ -28,7 +28,7 @@ private:
     int sock_fd, client_sock_fd;
 
 public:
-    int createSock(int num1, int num2);
+    int createSock(string ip, double port);
     void setData(string info);
 
 };

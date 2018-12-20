@@ -1,24 +1,17 @@
-//
-// Created by reut on 13/12/18.
-//
 
 #include "DataReaderServer.h"
 #include <stdio.h>
 #include <stdlib.h>
-
 #include <iostream>
-
 #include <netdb.h>
 #include <unistd.h>
 #include <netinet/in.h>
-
 #include <string.h>
-
 #include <sys/socket.h>
 using namespace std;
 
-int DataReaderServer:: createSock(int port, int time){
-    int portno;
+int DataReaderServer:: createSock(double port, double time){
+    double portno;
     //struct sockaddr_in serv_addr, cli_addr;
 
 

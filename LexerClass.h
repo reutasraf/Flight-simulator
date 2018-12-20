@@ -10,12 +10,14 @@
 #include <list>
 using namespace std;
 
-class lexer1 {
+class LexerClass {
 
-    vector<string> lexer(string);
-    vector<string> readFromFile(string fileName);
+    list<string> Lexer();
+    list<string> splitToCommand(string line);
+    list<list<string>> readFromFile();
 
-};
+
+    };
 
 
 #endif //FLIGHT_LEXER_H
