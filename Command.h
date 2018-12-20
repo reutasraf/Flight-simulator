@@ -10,7 +10,7 @@
 #include <list>
 #include "DataReaderServer.h"
 #include "DataClient.h"
-
+#include "Dijkstra.h"
 using namespace std;
 
 class Command
@@ -18,11 +18,13 @@ class Command
 protected:
     DataReaderServer* server1;
     DataClient* dataClient;
+    Dijkstra* dijkstra1;
 
 public:
-    Command(DataReaderServer* server2,DataClient* dataClient1){
+    Command(DataReaderServer* server2,DataClient* dataClient1,Dijkstra* dijkstra){
         this->server1 = server2;
         this->dataClient = dataClient1;
+        this->dijkstra1 = dijkstra;
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index)=0;
 };

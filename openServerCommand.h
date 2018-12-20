@@ -15,7 +15,7 @@ public:
 
     //void* OpenThreadFunc(void* args);
     void* OpenThread(void* pVoid);
-    openServerCommand(DataReaderServer* server5,DataClient* dataClient1):Command(server5,dataClient1){}
+    openServerCommand(DataReaderServer* server5,DataClient* dataClient1,Dijkstra* dij):Command(server5,dataClient1,dij){}
 
 };
 #endif //FLIGHT_OPENSERVERCOMMAND_H

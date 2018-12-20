@@ -15,8 +15,9 @@ private:
     vector<int> indexForCommand;
     Parser* parser;
 public:
-    LoopCommand(DataReaderServer* server5,DataClient* dataClient1,Parser* parser1
-    ):Command(server5,dataClient1){
+    LoopCommand(DataReaderServer* server5,DataClient* dataClient1,Parser* parser1,Dijkstra* dij)
+    :Command(server5,dataClient1,dij)
+    {
         this->parser = parser1;
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);

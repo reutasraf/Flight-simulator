@@ -9,6 +9,7 @@
 #include <string>
 #include "Command.h"
 #include "DataClient.h"
+#include "Parser.h"
 using namespace std;
 
 
@@ -18,6 +19,8 @@ private:
     map<string, Command*> commandMap;
     DataReaderServer* server1 ;
     DataClient* dataClient;
+    Dijkstra* dijkstra2;
+    Parser* pars;
 public:
     /*Maps(){
         this->server1 = new DataReaderServer((this->getSymbolMap()));
@@ -26,9 +29,11 @@ public:
     double getSymbol(string var);
     Command* getCommand(string comamnd);
     map<string,double >* getSymbolMap();
+    map<string,Command* >* getComMap();
     void initMapCom();
     void setServer(DataReaderServer* dataReaderServer,DataClient* dataClient1 );
-
+    void setDij(Dijkstra* dijkstra);
+    void setParser(Parser* parser);
 
 };
 

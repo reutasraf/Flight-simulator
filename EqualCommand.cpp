@@ -11,7 +11,8 @@ int EqualCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
 
      }
      //TODO sent value to expression and save in val
-    double val;
+    double val=this->dijkstra1->operator()(valueExpr);
+
 
                             //map1->at(vector1[index][0])=stod(vector1[index][2]);
     map1->at(vector1[index][0])=val;

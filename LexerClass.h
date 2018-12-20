@@ -12,9 +12,10 @@ using namespace std;
 
 class LexerClass {
 
-    list<string> Lexer();
-    list<string> splitToCommand(string line);
-    list<list<string>> readFromFile();
+public:
+    vector<string> Lexer();
+    vector<string> splitToCommand(string line);
+    vector<vector<string>> readFromFile(string fileName);
 
 
     };

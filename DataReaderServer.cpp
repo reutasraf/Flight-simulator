@@ -8,6 +8,8 @@
 #include <netinet/in.h>
 #include <string.h>
 #include <sys/socket.h>
+#include <algorithm>
+
 using namespace std;
 
 int DataReaderServer:: createSock(double port, double time){
@@ -87,7 +89,8 @@ string DataReaderServer::readFromSock(){
 }
 
 void DataReaderServer::addPath(string var,string path){
-    this->mapPath->insert(pair<string,string>(var,path));
+    (this->mapPath)->insert(pair<string,string>(var,path));
+    //this->mapPath[var]=path;
 }
 
 string DataReaderServer::getPath(string var) {
@@ -125,15 +128,53 @@ void DataReaderServer::buildMap() {
 
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
+
+    string temp = buff;
+    int co=0;
+    int count1 = 0;
+    co = temp.find_first_of("\n");
+    if(co!=string::npos){
+
+        temp = temp.substr(co+1,temp.size()-1);
+        count1= 1;
+
+    }
+    co = temp.find_first_of("\n");
+    if(co!=string::npos){
+
+        count1=2;
+    }
+
+
     size_t pos = 0;
+    size_t found;
     string delimiter = ",";
+    if(count1>1){
+
+        found = buff.find_first_of("\n");
+        buff = buff.substr(found+1, buff.size()-1);
+        found = buff.find_first_of("\n");
+        buff = buff.substr(0, found);
+
+    }
+    if(count1==1){
+        found = buff.find_first_of("\n");
+        buff = buff.substr(0, found);
+    }
+
+
+
     while ((pos = buff.find(delimiter)) != string::npos) {
+
         info.push_back(stod(buff.substr(0, pos)));
         buff.erase(0, pos + delimiter.length());
     }
+    string gg = buff;
+
     info.push_back(stod(buff.substr(0, pos)));
     return info;
 }
+
 
 void DataReaderServer::setMapPath(vector<double> vector1) {
 

@@ -1,30 +1,4 @@
-#include "openServerCommand.h"void* OpenThreadFunc(void* args){
-    ///read
-    struct dataToSoc* params=(struct dataToSoc*) args;
-    params->server2->createSock(params->port,params->timeRead);
-    while (true)    {
-        auto x = params->server2->readFromSock();
-        if (x == "exit") break;
-    }
-
-
-
-
-
-    return nullptr;
-}
-void* openServerCommand:: OpenThread(void* pVoid) {
-    //struct dataToSoc* params=new dataToSoc;
-    //params->port=this->port;
-    //params->timeRead=this->time;
-    struct dataToSoc* params=(struct dataToSoc*) pVoid;
-    pthread_t trid;
-    pthread_create(&trid, nullptr,OpenThreadFunc,params);
-    return 0;
-}
-
-
-
+#include "openServerCommand.h"
 #include <pthread.h>
 struct dataToSoc{
     double port;
@@ -70,10 +44,9 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
             for (int i = indexSeparate + 1; i < vector1[index].size(); ++i) {
                 timeString = timeString + vector1[index][i] + " ";
             }
-            double portVal;
-            double timeVal;
+            double portVal=this->dijkstra1->operator()(portString);
+            double timeVal=this->dijkstra1->operator()(timeString);
 
-            //TODO sent to exp portVal timeVal
             this->port = portVal;
             this->time = timeVal;
 
@@ -87,8 +60,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
             for (int i = 1; i < size - 3; ++i) {
                 portString = portString + vector1[index][i] + " ";
             }
-            //TODO sent to exp portVal timeVal
-            double portVal;
+            double portVal=this->dijkstra1->operator()(portString);
             this->port = portVal;
             this->time = stod(vector1[index][size - 1]);
 
@@ -104,9 +76,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
             }
 
         }
-        //TODO sent to exp portVal timeVal
-        double portVal;
-        this->port = portVal;
+        double portVal=this->dijkstra1->operator()(portString);
         this->time = stod(vector1[index][size - 1]);
 
         return 1;
@@ -127,7 +97,7 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
 void* OpenThreadFunc(void* args){
     ///read
     struct dataToSoc* params=(struct dataToSoc*) args;
-    params->server2->createSock(params->port,params->timeRead);
+    //params->server2->createSock(params->port,params->timeRead);
     while (true)    {
         auto x = params->server2->readFromSock();
         if (x == "exit") break;
@@ -141,6 +111,7 @@ void* openServerCommand:: OpenThread(void* pVoid) {
     //params->timeRead=this->time;
     struct dataToSoc* params=(struct dataToSoc*) pVoid;
     pthread_t trid;
+    params->server2->createSock(params->port,params->timeRead);
     pthread_create(&trid, nullptr,OpenThreadFunc,params);
     return 0;
 }

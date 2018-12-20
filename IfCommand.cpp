@@ -1,10 +1,11 @@
+//
+// Created by reut on 20/12/18.
+//
 
-#include "LoopCommand.h"
-#include <string>
+#include "IfCommand.h"
 
-using namespace std;
+int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
 
-int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
     int size=vector1[index].size();
 
     int i=1;
@@ -29,15 +30,15 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
 
     vector<vector<string>> newVactor=vector1;
     newVactor.erase(newVactor.begin()+0);
-    while (returnBoolSign(first,second,sign,map1)){
+    if (returnBoolSign(first,second,sign,map1)){
 
         this->parser->interpLine(newVactor);
     }
 
     return 0;
-}
 
-bool LoopCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
+}
+bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
     double firstParm= this->dijkstra1->operator()(first);
     double secondParm= this->dijkstra1->operator()(second);
 
@@ -107,8 +108,3 @@ bool LoopCommand::returnBoolSign(string first, string second, string sign, map<s
     }
 }
 
-void LoopCommand::MakeCommandsVectors(vector<string> vec)  {
-    /*for(vector<string>::iterator it=vec.begin();it!=vec.end();++it){
-
-    }*/
-}

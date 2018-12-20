@@ -5,15 +5,20 @@
 using namespace std;
 int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index){
 
-                        // string temp = list1[index+3];
+    // string temp = list1[index+3];
     string temp = vector1[index][3];
     //if var is bind
     if(temp.compare("bind")==0){
-                        //map1->insert(pair<string,double >(list1[index+1],0));
+                  //map1->insert(pair<string,double >(list1[index+1],0));
         map1->insert(pair<string,double >(vector1[index][1],0));
 
-        string nameVar = vector1[index][1];
-        this->server1->addPath(nameVar,vector1[index][4]);
+        if(map1->count(vector1[index][4])==1){
+            string path25 = this->server1->getPath(vector1[index][4]);
+            this->server1->addPath(vector1[index][1],path25);
+        } else{
+            string nameVar = vector1[index][1];
+            this->server1->addPath(nameVar,vector1[index][4]);
+        }
         this->server1->updateMap();
         return 5;
 
@@ -26,31 +31,8 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
             valueExp=valueExp+vector1[index][i]+" ";
         }
 
-        //TODO sent value to expression and save in val
-        double val;
-
+        double val=this->dijkstra1->operator()(valueExp);
         map1->insert(pair<string, double>(var,val));
-/*
-        bool dig = false;
-        for(int i =0; i<temp.size();i++){
-            if((temp[i]>=48)&&(temp[i]<=57)){
-                dig = true;
-            } else{
-                dig= false;
-                break;
-            }
-        }
-        if(!dig){
-            if(map1->count(temp)==1){
-                map1->insert(pair<string, double>(var,map1->at(temp)));
-            } else{
-                __throw_bad_exception();
-            }
-            //if it is a number
-        } else{
-            map1->insert(pair<string, double>(var,stoi(temp)));
-        }
-*/
 
         return 4;
 
