@@ -1,4 +1,30 @@
-#include "openServerCommand.h"
+#include "openServerCommand.h"void* OpenThreadFunc(void* args){
+    ///read
+    struct dataToSoc* params=(struct dataToSoc*) args;
+    params->server2->createSock(params->port,params->timeRead);
+    while (true)    {
+        auto x = params->server2->readFromSock();
+        if (x == "exit") break;
+    }
+
+
+
+
+
+    return nullptr;
+}
+void* openServerCommand:: OpenThread(void* pVoid) {
+    //struct dataToSoc* params=new dataToSoc;
+    //params->port=this->port;
+    //params->timeRead=this->time;
+    struct dataToSoc* params=(struct dataToSoc*) pVoid;
+    pthread_t trid;
+    pthread_create(&trid, nullptr,OpenThreadFunc,params);
+    return 0;
+}
+
+
+
 #include <pthread.h>
 struct dataToSoc{
     int port;

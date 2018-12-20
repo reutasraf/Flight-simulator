@@ -8,19 +8,14 @@ using namespace std;
 
 int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
 
-    //initilize the command vectore
-    MakeCommandsVectors();
+    string firstParam = (vector1[0][1]);
 
-    string firstParam = (list1[index+1]);
-
-    string secondParam = (list1[index+3]);
-    string sign = list1[2+index];
-
-    //check if the condition is correct
+    string secondParam = (vector1[0][3]);
+    string sign = vector1[0][2];
+    vector<vector<string>> newVactor=vector1;
+    newVactor.erase(newVactor.begin()+0);
     while (returnBoolSign(firstParam,secondParam,sign,map1)){
-        for(vector<Command>::iterator it=this->commands.begin();it!=this->commands.end();++it){
-            (*it).doCommand(list1,map1,index);
-        }
+        this->parser->interpLine(newVactor);
     }
 
     return 0;

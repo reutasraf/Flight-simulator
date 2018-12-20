@@ -14,7 +14,7 @@ private:
     Maps* maps;
 public:
 
-    void interpLine(vector<string>);
+    void interpLine(vector<vector<string>>);
 
 
 };
