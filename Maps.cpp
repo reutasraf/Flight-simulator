@@ -7,6 +7,8 @@
 #include "ConnectCommand.h"
 #include "LoopCommand.h"
 #include "IfCommand.h"
+#include "PrintCommand.h"
+#include "SleepCommand.h"
 
 void Maps::setSymbel(string var, double value){
     this->symbolTable.at(var)=value;
@@ -40,6 +42,12 @@ void Maps:: initMapCom(){
 
     Command* ifCommand = new IfCommand(this->server1,this->dataClient,this->pars,this->dijkstra2);
     this->commandMap.insert(pair<string, Command*>("if",ifCommand));
+
+    Command* printCommand = new PrintCommand(this->server1,this->dataClient,this->dijkstra2);
+    this->commandMap.insert(pair<string, Command*>("print",printCommand));
+
+    Command* sleepCommand = new SleepCommand(this->server1,this->dataClient,this->dijkstra2);
+    this->commandMap.insert(pair<string, Command*>("sleep",sleepCommand));
 
 }
 

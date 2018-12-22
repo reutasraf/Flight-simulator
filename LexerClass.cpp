@@ -84,7 +84,11 @@ vector<vector<string>>  LexerClass:: readFromFile(string fileName){
     ifstream myfile (fileName);
     if(myfile.good()) {
         while (getline(myfile, line)) {
-            vector1.push_back(splitToCommand(line));
+            vector<string> afterSplit= splitToCommand(line);
+            if(afterSplit.size()>0){
+                vector1.push_back(splitToCommand(line));
+            }
+
         }
     }
     return vector1;

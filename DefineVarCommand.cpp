@@ -9,15 +9,18 @@ int DefineVarCommand::doCommand(vector<vector<string>> vector1,map<string, doubl
     string temp = vector1[index][3];
     //if var is bind
     if(temp.compare("bind")==0){
-                  //map1->insert(pair<string,double >(list1[index+1],0));
+        //add to map
         map1->insert(pair<string,double >(vector1[index][1],0));
 
+        //if the 4th elemt is in the map
         if(map1->count(vector1[index][4])==1){
             string path25 = this->server1->getPath(vector1[index][4]);
             this->server1->addPath(vector1[index][1],path25);
         } else{
             string nameVar = vector1[index][1];
-            this->server1->addPath(nameVar,vector1[index][4]);
+            string path = vector1[index][4];
+            path = path.substr(1,path.size()-2);
+            this->server1->addPath(nameVar,path);
         }
         this->server1->updateMap();
         return 5;

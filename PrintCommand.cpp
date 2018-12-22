@@ -3,21 +3,26 @@
 //
 
 #include "PrintCommand.h"
+#include "iostream"
 
-int PrintCommand::doCommand(vector<vector<string>> vector1,
-                            map<string, double> *map1, int index) {
+int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
 
     int size=vector1[index].size();
-    if(vector1[index][1].find("\"")!=std::string::npos){
-        string toPrint=vector1[index][2].substr(1,(vector1[index][2].size()-2));
-        std::cout <<toPrint <<'\n';
+    int find =0;
+    if((find = vector1[index][1].find("\""))!=std::string::npos){
+        string pri = vector1[index][1];
+        pri.erase(pri.begin()+find);
+        find = pri.find("\"");
+        pri.erase(pri.begin()+find,pri.begin()+ pri.size());
+        string toPrint=vector1[index][1].substr(1,(vector1[index][2].size()-2));
+        std::cout << pri <<'\n';
     } else{
         string toPrint="";
         for(int i=1;i<size;i++){
-            toPrint=toPrint+vector1[index][i];
+            toPrint=toPrint+vector1[index][i]+" ";
         }
         double pri=this->dijkstra1->operator()(toPrint);
-        std::cout <<pri <<'\n';
+        cout << pri <<'\n';
 
     }
 

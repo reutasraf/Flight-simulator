@@ -9,6 +9,8 @@
 #include "Command.h"
 
 class PrintCommand : public Command{
+public:
+    PrintCommand(DataReaderServer* server5,DataClient* dataClient1,Dijkstra* dij):Command(server5,dataClient1,dij){}
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
 
 };

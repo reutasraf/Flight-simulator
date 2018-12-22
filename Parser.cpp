@@ -18,11 +18,11 @@ void Parser::interpLine(vector<vector<string>> vector1) {
         else if(vector1[i][0]=="while"){
             vector<vector<string>> newVec=vector1;
 
-            //לבדוק אם חותך נכון
+
             newVec.erase(newVec.begin(),newVec.begin()+i);
             int ind =this->countLoopIf(newVec);
             newVec.erase(newVec.begin()+ind+1,newVec.begin()+newVec.size());
-            this->commandMap->at("while")->doCommand(vector1,this->symbolTable,i);
+            this->commandMap->at("while")->doCommand(newVec,this->symbolTable,0);
             i=i+ind;
         }else if(vector1[i][0]=="if"){
             vector<vector<string>> newVec=vector1;
@@ -33,11 +33,12 @@ void Parser::interpLine(vector<vector<string>> vector1) {
             newVec.erase(newVec.begin(),newVec.begin()+i);
             int ind =this->countLoopIf(newVec);
             newVec.erase(newVec.begin()+ind+1,newVec.begin()+newVec.size());
-            this->commandMap->at("while")->doCommand(vector1,this->symbolTable,i);
+            this->commandMap->at("if")->doCommand(newVec,this->symbolTable,0);
             i=i+ind;
         }
         else{
             string dd = vector1[i][0];
+            //int count = commandMap->count(vector1[i][0]);
             Command* co = this->commandMap->at(vector1[i][0]);
             this->commandMap->at(vector1[i][0])->doCommand(vector1,this->symbolTable,i);
 
@@ -51,7 +52,7 @@ int Parser::countLoopIf(vector<vector<string>> vector1) {
     int breaks = -1;
     int index = 0;
     int flag = 0;
-    for(int i = 0;i<vector1.size();i++){
+    for(int i = 1;i<vector1.size();i++){
         for(int j = 0;j<vector1[i].size();j++){
             if((vector1[i][j]=="while")||(vector1[i][j]=="if")){
                 flag++;
@@ -66,9 +67,9 @@ int Parser::countLoopIf(vector<vector<string>> vector1) {
             if(breaks>=0){
                 break;
             }
+        }
         if(breaks>=0){
             break; }
-        }
     }
     index = breaks;
     return index;

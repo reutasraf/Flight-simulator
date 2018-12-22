@@ -129,6 +129,8 @@ void DataReaderServer::buildMap() {
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
 
+    string vv = buff;
+    int size = buff.size();
     string temp = buff;
     int co=0;
     int count1 = 0;
@@ -164,10 +166,13 @@ vector<double> DataReaderServer::split(string buff) {
 
 
 
+    int y = 0;
     while ((pos = buff.find(delimiter)) != string::npos) {
 
-        info.push_back(stod(buff.substr(0, pos)));
+        if(pos!=0){info.push_back(stod(buff.substr(0, pos)));}
+        //info.push_back(stod(buff.substr(0, pos)));
         buff.erase(0, pos + delimiter.length());
+        y++;
     }
     string gg = buff;
 
@@ -206,11 +211,11 @@ void DataReaderServer::setMapPath(vector<double> vector1) {
 
 void DataReaderServer::updateMap() {
 
-    map<string,string>::iterator it=this->mapPath->begin();
+    map<string,string>::iterator it=(this->mapPath)->begin();
     for(it; it!=this->mapPath->end();++it){
        string path = (*it).second;
        string varName = (*it).first;
-       double val = this->pathRead.at(path);
+       double val = (this->pathRead).at(path);
        this->realMap->at(varName) = val;
     }
 

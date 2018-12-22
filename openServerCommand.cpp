@@ -12,49 +12,62 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
                         //this->port = stoi(list1[1+index]);
                         //this->time = stoi(list1[2+index]);
     int indexSeparate = 0;
+    int flag = 0;
     //if there are just 2 parameters
     if (vector1[index].size() == 3) {
-        this->port = stod(vector1[index][1]);
-        this->time = stod(vector1[index][2]);
+        this->port=this->dijkstra1->operator()(vector1[index][1]);
+        this->time=this->dijkstra1->operator()(vector1[index][2]);
         //its complicate expression
     } else {
-        for (int i = 1; i < vector1[index].size(); ++i) {
-            if (vector1[index][i] == ",") {
-                indexSeparate = i;
-                break;
-            }
-            // num " " num
-            if (((vector1[index][i][0] >= 48) &&
-                 (vector1[index][i][0] <= 57)) &&
-                ((vector1[index][i + 2][0] >= 48) &&
-                 (vector1[index][i + 2][0] <= 57)) &&
-                (vector1[index][i + 1] == " ")) {
-                indexSeparate = i;
-                break;
-            }
 
+
+        //if seperate by ","
+        for(int t = 0; t<vector1[index].size();t++){
+            if(vector1[index][t]==","){
+                indexSeparate = t;
+                flag = 1;
+                break;
+            }
         }
+        //if seperate by " "
+        if(flag==0){
+            for(int t = 1; t<vector1[index].size()-1;t++){
+                if((vector1[index][t]!="/")&&(vector1[index][t]!="*")
+                &&(vector1[index][t]!="+")&&(vector1[index][t]!="-")
+                &&(vector1[index][t+1]!="/")&&(vector1[index][t+1]!="*")
+                &&(vector1[index][t+1]!="+")&&(vector1[index][t+1]!="-")){
+                   indexSeparate = t+1;
+                    flag = 2;
+                    break;
+                }
+
+            }
+        }
+
         //if the it separate by comma / two num separate by " " -sent to expression
         string portString = "";
         string timeString = "";
-        if (indexSeparate != 1) {
-            for (int i = 1; i < indexSeparate; ++i) {
-                portString = portString + vector1[index][i] + " ";
-            }
-            for (int i = indexSeparate + 1; i < vector1[index].size(); ++i) {
-                timeString = timeString + vector1[index][i] + " ";
-            }
-            double portVal=this->dijkstra1->operator()(portString);
-            double timeVal=this->dijkstra1->operator()(timeString);
-
-            this->port = portVal;
-            this->time = timeVal;
-
-            return 1;
-
+        for(int i = 1;i<indexSeparate;i++){
+            portString = portString+vector1[index][i]+" ";
         }
+        int i;
+        //if its ","
+        if(flag== 1){
+            i = indexSeparate+1;
+        } else if(flag==2){
+            i = indexSeparate;
+        }
+        for(i;i<vector1[index].size();i++){
+            timeString = timeString+vector1[index][i]+" ";
+        }
+        double portVal=this->dijkstra1->operator()(portString);
+        double time=this->dijkstra1->operator()(timeString);
+        this->port = portVal;
+        this->time = time;
+
+
         //if it end with -num
-        int size = vector1[index].size();
+        /*int size = vector1[index].size();
         if ((vector1[index][size - 2] == "-") &&
             (isdigit(vector1[index][size - 1][0]))) {
             for (int i = 1; i < size - 3; ++i) {
@@ -65,30 +78,20 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
             this->time = stod(vector1[index][size - 1]);
 
             return 1;
-        }
+        }*/
 
         //if it complex -need to find where to separate
-        for (int i = 1; i < size - 2; ++i) {
-            if ((isdigit(vector1[index][i][0])) &&
-                (vector1[index][i + 1] == " ") &&
-                (isdigit(vector1[index][i + 2][0]))) {
-                indexSeparate = i;
-            }
 
-        }
-        double portVal=this->dijkstra1->operator()(portString);
-        this->time = stod(vector1[index][size - 1]);
-
-        return 1;
     }
+
         //open the thread
-        struct dataToSoc *params = new dataToSoc;
-        params->port = this->port;
-        params->timeRead = this->time;
-        params->server2 = this->server1;
-        this->OpenThread(params);
-        delete (params);
-        return 3;
+    struct dataToSoc *params = new dataToSoc;
+    params->port = this->port;
+    params->timeRead = this->time;
+    params->server2 = this->server1;
+    this->OpenThread(params);
+    delete (params);
+    return 3;
 
 
 

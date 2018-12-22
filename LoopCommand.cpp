@@ -10,13 +10,14 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
     int i=1;
     string first="";
     string second="";
-    while ((vector1[index][i]!="<")||(vector1[index][i]!=">")||(vector1[index][i]!="=")||(vector1[index][i]!="!")){
+    while ((vector1[index][i]!="<")&&(vector1[index][i]!=">")&&(vector1[index][i]!="=")&&(vector1[index][i]!="!")){
         first=first+vector1[index][i]+" ";
         i++;
     }
     string sign = vector1[index][i];
-    if (vector1[index][i+1]=="="){
-        sign = sign+vector1[index][i+1];
+    i++;
+    if (vector1[index][i]=="="){
+        sign = sign+vector1[index][i];
         i++;
 
     }
@@ -29,6 +30,19 @@ int LoopCommand::doCommand(vector<vector<string>> vector1, map<string, double> *
 
     vector<vector<string>> newVactor=vector1;
     newVactor.erase(newVactor.begin()+0);
+    //check the }
+    for(int o = 0;o<newVactor[newVactor.size()-1].size();o++){
+        if(newVactor[newVactor.size()-1][o]=="}"){
+            newVactor[newVactor.size()-1].erase(newVactor[newVactor.size()-1].begin()+o);
+            break;
+        }
+    }
+    //if the last vector is empty erase the vector
+    if(newVactor[newVactor.size()-1].size()==0){
+        newVactor.erase(newVactor.begin()+newVactor.size());
+    }
+    //newVactor.erase(newVactor.begin()+newVactor.size());
+
     while (returnBoolSign(first,second,sign,map1)){
 
         this->parser->interpLine(newVactor);
@@ -44,7 +58,7 @@ bool LoopCommand::returnBoolSign(string first, string second, string sign, map<s
     double firstVal = firstParm;
     double secondVal = secondParm;
     //check if the first is var in map
-    if(map1->count(first)==1){
+    /*if(map1->count(first)==1){
         firstVal = map1->at(first);
     } else{
         firstVal=stod(first);
@@ -54,7 +68,7 @@ bool LoopCommand::returnBoolSign(string first, string second, string sign, map<s
         secondVal= map1->at(second);
     }else{
         secondVal=stod(second);
-    }
+    }*/
 
     if(sign==">"){
         if(firstVal>secondVal){
