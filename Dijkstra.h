@@ -26,16 +26,27 @@ class Dijkstra {
 public:
     Dijkstra(map<string, double>* var_to_val);
 
+
 private:
     Expression* applyOp(double a, double b, char op);
     vector<string> splitLine(const string &str, char sign);
+    vector<BinaryExpression*> deleteVector;
 
     double calculate(string tokens);
     double evaluate(string tokens);
 
 public:
     double virtual operator()(char* str);
-    double virtual operator()(string str);
+    double virtual toVl(string str);
+    void addToDelete(BinaryExpression* exp);
+    ~Dijkstra(){
+        vector<BinaryExpression*>::iterator it = this->deleteVector.begin();
+        for(it;it!=this->deleteVector.end();++it){
+            delete (*it)->getRight();
+            delete (*it)->getLeft();
+            delete (*it);
+        }
+    }
 
 };
 

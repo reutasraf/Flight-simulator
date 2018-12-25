@@ -26,13 +26,17 @@ private:
     map<string, string>* mapPath;
     map<string,double > pathRead;
     map<string,double >* realMap;
+    pthread_mutex_t *mut;
+    bool continueLoop;
 
 
 public:
-    DataReaderServer(map<string,double >* realMap){
+    DataReaderServer(map<string,double >* realMap,pthread_mutex_t *mut){
         this->realMap = realMap;
         this->mapPath = new map<string,string>;
         buildMap();
+        this->mut = mut;
+        this->continueLoop = true;
     }
     int createSock(double num1, double num2);
     string readFromSock();
@@ -43,6 +47,12 @@ public:
     vector<double > split(string buff);
     void setMapPath(vector<double> vector1);
     void updateMap();
+    ~DataReaderServer(){
+        delete this->mapPath;
+    }
+    void stopLoop(){
+        this->continueLoop = false;
+    }
     //struct sockaddr_in getSock();
 
 };

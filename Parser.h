@@ -20,7 +20,7 @@ public:
         this->symbolTable = symbolTable;
         this->commandMap = commandMap;
     }
-    void interpLine(vector<vector<string>>);
+    int interpLine(vector<vector<string>>);
     int countLoopIf(vector<vector<string>>);
 
 };

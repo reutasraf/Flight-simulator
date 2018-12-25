@@ -57,7 +57,9 @@ void DataClient::setData(string path) {
     /*for(int i= 0;i<lenPath;i++){
         buffer[i]=path[i];
     }*/
-    n = write(this->sock_fd,&path,lenPath);
+    const char * neaString=path.c_str();
+    n = write(this->sock_fd,neaString,lenPath);
+
 
     if (n < 0) {
         __throw_bad_exception();

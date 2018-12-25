@@ -16,6 +16,7 @@ public:
     Expression *getLeft();
     Expression *getRight();
     BinaryExpression(Expression* left,Expression* right);
+
 };
 
 

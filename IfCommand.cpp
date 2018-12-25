@@ -82,8 +82,8 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
 
 }
 bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
-    double firstParm= this->dijkstra1->operator()(first);
-    double secondParm= this->dijkstra1->operator()(second);
+    double firstParm= this->dijkstra1->toVl(first);
+    double secondParm= this->dijkstra1->toVl(second);
 
     double firstVal = firstParm;
     double secondVal = secondParm;

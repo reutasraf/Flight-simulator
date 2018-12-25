@@ -19,12 +19,14 @@ protected:
     DataReaderServer* server1;
     DataClient* dataClient;
     Dijkstra* dijkstra1;
+    pthread_mutex_t *mut;
 
 public:
-    Command(DataReaderServer* server2,DataClient* dataClient1,Dijkstra* dijkstra){
+    Command(DataReaderServer* server2,DataClient* dataClient1,Dijkstra* dijkstra,pthread_mutex_t *mut){
         this->server1 = server2;
         this->dataClient = dataClient1;
         this->dijkstra1 = dijkstra;
+        this->mut = mut;
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index)=0;
 };

@@ -21,10 +21,11 @@ private:
     DataClient* dataClient;
     Dijkstra* dijkstra2;
     Parser* pars;
+    pthread_mutex_t *mut;
 public:
-    /*Maps(){
-        this->server1 = new DataReaderServer((this->getSymbolMap()));
-    }*/
+    Maps(pthread_mutex_t *mut){
+        this->mut = mut;
+    }
     void setSymbel(string var, double value);
     double getSymbol(string var);
     Command* getCommand(string comamnd);
@@ -34,6 +35,14 @@ public:
     void setServer(DataReaderServer* dataReaderServer,DataClient* dataClient1 );
     void setDij(Dijkstra* dijkstra);
     void setParser(Parser* parser);
+    ~Maps(){
+        map<string,Command*>::iterator it = this->commandMap.begin();
+        for(it;it!=this->commandMap.end();++it){
+
+            delete (*it).second;
+        }
+    }
+
 
 };
 

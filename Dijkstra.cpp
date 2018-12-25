@@ -37,17 +37,32 @@ int Dijkstra::precedence(char op) {
  */
 Expression *Dijkstra::applyOp(double a, double b, char op) {
     switch (op) {
-        case '+':
-            return new Plus(new Num(a), new Num(b));
-        case '-':
-            return new Minus(new Num(a), new Num(b));
-        case '*':
-            return new Mul(new Num(a), new Num(b));
-        case '/':
-            return new Div(new Num(a), new Num(b));
+        case '+': {
+            BinaryExpression *newPlus = new Plus(new Num(a), new Num(b));
+            addToDelete(newPlus);
+            return newPlus;
+        }
+        case '-':{
+            BinaryExpression *newMin = new Minus(new Num(a), new Num(b));
+            addToDelete(newMin);
+            return newMin;
+        }
+        case '*':{
+            BinaryExpression *newMult = new Mul(new Num(a), new Num(b));
+            addToDelete(newMult);
+            return newMult;
+        }
+        case '/':{
+            BinaryExpression *newDiv = new Div(new Num(a), new Num(b));
+            addToDelete(newDiv);
+            return newDiv;
+        }
     }
 }
+void Dijkstra::addToDelete(BinaryExpression* exp){
+    this->deleteVector.push_back(exp);
 
+}
 
 /**
  * returns value of  expression after evaluation.
@@ -201,7 +216,7 @@ double Dijkstra::operator()(char *str) {
  * @param str string
  * @return double - the value after evaluate
  */
-double Dijkstra::operator()(string str) {
+double Dijkstra::toVl(string str) {
     return calculate(str);
 }
 
@@ -236,5 +251,8 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
     string_after_evaluate_vars+=space; // add one more whitespace
 
     double result = evaluate(string_after_evaluate_vars);
+    if(result ==(-0)){ // edge case "-0"
+        result=0;
+    }
     return result;
 }

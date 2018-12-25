@@ -9,6 +9,7 @@
 #include "IfCommand.h"
 #include "PrintCommand.h"
 #include "SleepCommand.h"
+#include "ExitCommand.h"
 
 void Maps::setSymbel(string var, double value){
     this->symbolTable.at(var)=value;
@@ -25,29 +26,32 @@ map<string,double >* Maps::getSymbolMap() { return &(this->symbolTable);}
 
 
 void Maps:: initMapCom(){
-    Command* openData = new openServerCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* openData = new openServerCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("openDataServer",openData));
 
-    Command* varCommand = new DefineVarCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* varCommand = new DefineVarCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("var",varCommand));
 
-    Command* equalCommand = new EqualCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* equalCommand = new EqualCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("equal",equalCommand));
 
-    Command* connectCommand = new ConnectCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* connectCommand = new ConnectCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("connect",connectCommand));
 
-    Command* loopCommand = new LoopCommand(this->server1,this->dataClient,this->pars,this->dijkstra2);
+    Command* loopCommand = new LoopCommand(this->server1,this->dataClient,this->pars,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("while",loopCommand));
 
-    Command* ifCommand = new IfCommand(this->server1,this->dataClient,this->pars,this->dijkstra2);
+    Command* ifCommand = new IfCommand(this->server1,this->dataClient,this->pars,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("if",ifCommand));
 
-    Command* printCommand = new PrintCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* printCommand = new PrintCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("print",printCommand));
 
-    Command* sleepCommand = new SleepCommand(this->server1,this->dataClient,this->dijkstra2);
+    Command* sleepCommand = new SleepCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("sleep",sleepCommand));
+
+    Command* exitCommand = new ExitCommand(this->server1,this->dataClient,this->pars,this->dijkstra2,this->mut);
+    this->commandMap.insert(pair<string, Command*>("exit",exitCommand));
 
 }
 

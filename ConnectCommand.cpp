@@ -15,7 +15,7 @@ int ConnectCommand::doCommand(vector<vector<string>> vector1, map<string, double
     for(int i=2;i<size;i++){
         second=second+vector1[index][i]+" ";
     }
-    double portVal=this->dijkstra1->operator()(second);
+    double portVal=this->dijkstra1->toVl(second);
 
     dataClient->createSock(vector1[index][1],portVal);
     return 3;

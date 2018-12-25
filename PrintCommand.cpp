@@ -14,14 +14,14 @@ int PrintCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         pri.erase(pri.begin()+find);
         find = pri.find("\"");
         pri.erase(pri.begin()+find,pri.begin()+ pri.size());
-        string toPrint=vector1[index][1].substr(1,(vector1[index][2].size()-2));
+        //string toPrint=vector1[index][1].substr(1,(vector1[index][2].size()-2));
         std::cout << pri <<'\n';
     } else{
         string toPrint="";
         for(int i=1;i<size;i++){
             toPrint=toPrint+vector1[index][i]+" ";
         }
-        double pri=this->dijkstra1->operator()(toPrint);
+        double pri=this->dijkstra1->toVl(toPrint);
         cout << pri <<'\n';
 
     }

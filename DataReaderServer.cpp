@@ -45,6 +45,7 @@ int DataReaderServer:: createSock(double port, double time){
 
     listen(sock_fd,1);
     this->time=time;
+    this->continueLoop = true;
 
     accept();
     return 0;
@@ -66,7 +67,7 @@ void DataReaderServer::accept()
 
 string DataReaderServer::readFromSock(){
     //read and update data.
-    while (true){
+    while (this->continueLoop){
         char buffer[1000];
         ssize_t bytes_read;
         bytes_read = read(this->client_sock_fd, buffer, 999);
@@ -84,7 +85,7 @@ string DataReaderServer::readFromSock(){
         this->setMapPath(buffSplit);
         updateMap();
     }
-    return "";
+    return "exit";
 
 }
 
@@ -211,13 +212,19 @@ void DataReaderServer::setMapPath(vector<double> vector1) {
 
 void DataReaderServer::updateMap() {
 
+    pthread_mutex_lock(this->mut);
     map<string,string>::iterator it=(this->mapPath)->begin();
     for(it; it!=this->mapPath->end();++it){
        string path = (*it).second;
        string varName = (*it).first;
-       double val = (this->pathRead).at(path);
-       this->realMap->at(varName) = val;
+       if((this->pathRead).count(path)==1){
+           double val = (this->pathRead).at(path);
+           this->realMap->at(varName) = val;
+       }
+
     }
+    pthread_mutex_unlock(this->mut);
+
 
 }
 

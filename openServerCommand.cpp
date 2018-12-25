@@ -15,8 +15,8 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
     int flag = 0;
     //if there are just 2 parameters
     if (vector1[index].size() == 3) {
-        this->port=this->dijkstra1->operator()(vector1[index][1]);
-        this->time=this->dijkstra1->operator()(vector1[index][2]);
+        this->port=this->dijkstra1->toVl(vector1[index][1]);
+        this->time=this->dijkstra1->toVl(vector1[index][2]);
         //its complicate expression
     } else {
 
@@ -60,27 +60,11 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
         for(i;i<vector1[index].size();i++){
             timeString = timeString+vector1[index][i]+" ";
         }
-        double portVal=this->dijkstra1->operator()(portString);
-        double time=this->dijkstra1->operator()(timeString);
+        double portVal=this->dijkstra1->toVl(portString);
+        double time=this->dijkstra1->toVl(timeString);
         this->port = portVal;
         this->time = time;
 
-
-        //if it end with -num
-        /*int size = vector1[index].size();
-        if ((vector1[index][size - 2] == "-") &&
-            (isdigit(vector1[index][size - 1][0]))) {
-            for (int i = 1; i < size - 3; ++i) {
-                portString = portString + vector1[index][i] + " ";
-            }
-            double portVal=this->dijkstra1->operator()(portString);
-            this->port = portVal;
-            this->time = stod(vector1[index][size - 1]);
-
-            return 1;
-        }*/
-
-        //if it complex -need to find where to separate
 
     }
 
@@ -102,6 +86,7 @@ void* OpenThreadFunc(void* args){
     struct dataToSoc* params=(struct dataToSoc*) args;
     //params->server2->createSock(params->port,params->timeRead);
     while (true)    {
+
         auto x = params->server2->readFromSock();
         if (x == "exit") break;
     }

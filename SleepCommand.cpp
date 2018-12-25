@@ -11,7 +11,7 @@ int SleepCommand::doCommand(vector<vector<string>> vector1, map<string, double> 
         paramToSleep=paramToSleep+vector1[index][i]+" ";
 
     }
-    double sleepVal = this->dijkstra1->operator()(paramToSleep);
+    double sleepVal = this->dijkstra1->toVl(paramToSleep);
     usleep(static_cast<unsigned int> (sleepVal * 1000));
 
 }
