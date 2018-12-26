@@ -6,6 +6,12 @@
 #include "DataClient.h"
 #include <string>
 using namespace std;
+/**
+ * create the socket for client
+ * @param ip  the ip
+ * @param port the port
+ * @return
+ */
 int DataClient::createSock(string ip, double port) {
     struct sockaddr_in serv_addr;
     struct hostent *server;
@@ -40,7 +46,10 @@ int DataClient::createSock(string ip, double port) {
 
     return 0;
 }
-
+/**
+ * set the data -write it.
+ * @param path the
+ */
 void DataClient::setData(string path) {
 
     /* Now ask for a message from the user, this message

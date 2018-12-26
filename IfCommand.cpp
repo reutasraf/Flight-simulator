@@ -3,7 +3,13 @@
 //
 
 #include "IfCommand.h"
-
+/**
+ * the if command-take care of if line
+ * @param vector1 the vector of the data
+ * @param map1 the map of the value of the vars
+ * @param index-the index of the current data we need
+ * @return
+ */
 int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index) {
 
     int size=vector1[index].size();
@@ -11,10 +17,23 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
     int i=1;
     string first="";
     string second="";
+    int close1 = 0;
+    //take care of ( in if
     while ((vector1[index][i]!="<")&&(vector1[index][i]!=">")&&(vector1[index][i]!="=")&&(vector1[index][i]!="!")){
         first=first+vector1[index][i]+" ";
+
+        if(vector1[index][i]=="("){
+            close1++;
+        }
+        if(vector1[index][i]==")"){
+            close1--;
+        }
         i++;
     }
+    if(close1>0){
+        first.erase(first.begin(),first.begin()+close1+1);
+    }
+    close1 = 0;
     string sign = vector1[index][i];
     i++;
     if (vector1[index][i]=="="){
@@ -24,7 +43,16 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
     }
     while (vector1[index][i]!="{"){
         second=second+vector1[index][i]+" ";
+        if(vector1[index][i]=="("){
+            close1++;
+        }
+        if(vector1[index][i]==")"){
+            close1--;
+        }
         i++;
+    }
+    if(close1<0){
+        second.erase(second.begin()+second.size()+close1-2,second.begin()+second.size());
     }
     //double firstParm= this->dijkstra1->operator()(first);
     //double secondParm= this->dijkstra1->operator()(second);
@@ -81,6 +109,14 @@ int IfCommand::doCommand(vector<vector<string>> vector1, map<string, double> *ma
 
 
 }
+/**
+ *
+ * @param first the first value or var
+ * @param second  the second value or var
+ * @param sign  the sign of the condition
+ * @param map1  map of vars
+ * @return true if the condition is true.else return false
+ */
 bool IfCommand::returnBoolSign(string first, string second, string sign, map<string, double> *map1) {
     double firstParm= this->dijkstra1->toVl(first);
     double secondParm= this->dijkstra1->toVl(second);

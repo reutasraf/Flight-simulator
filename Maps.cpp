@@ -24,7 +24,9 @@ Command* Maps:: getCommand(string comamnd){
 map<string,double >* Maps::getSymbolMap() { return &(this->symbolTable);}
 
 
-
+/**
+ * initialize the map of the command according to the command we have in the program.
+ */
 void Maps:: initMapCom(){
     Command* openData = new openServerCommand(this->server1,this->dataClient,this->dijkstra2,this->mut);
     this->commandMap.insert(pair<string, Command*>("openDataServer",openData));
@@ -54,7 +56,11 @@ void Maps:: initMapCom(){
     this->commandMap.insert(pair<string, Command*>("exit",exitCommand));
 
 }
-
+/**
+ * set the server
+ * @param dataReaderServer
+ * @param dataClient1
+ */
 void Maps::setServer(DataReaderServer* dataReaderServer,DataClient* dataClient1) {
     this->server1 = dataReaderServer;
     this->dataClient = dataClient1;

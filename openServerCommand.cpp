@@ -1,5 +1,7 @@
 #include "openServerCommand.h"
 #include <pthread.h>
+
+//struct for the pthread
 struct dataToSoc{
     double port;
     double timeRead;
@@ -7,10 +9,15 @@ struct dataToSoc{
 
 };
 
+/**
+ * the openServer command-open the new thread and the socket is from this thread
+ * @param vector1 the vector of the data
+ * @param map1 the map of the value of the vars
+ * @param index-the index of the current data we need
+ * @return
+ */
 int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index) {
 
-                        //this->port = stoi(list1[1+index]);
-                        //this->time = stoi(list1[2+index]);
     int indexSeparate = 0;
     int flag = 0;
     //if there are just 2 parameters
@@ -74,13 +81,17 @@ int openServerCommand::doCommand(vector<vector<string>> vector1,map<string, doub
     params->timeRead = this->time;
     params->server2 = this->server1;
     this->OpenThread(params);
-    delete (params);
+    //delete (params);
     return 3;
 
 
 
 }
-
+/**
+ * the func that run the thread
+ * @param args
+ * @return nothing
+ */
 void* OpenThreadFunc(void* args){
     ///read
     struct dataToSoc* params=(struct dataToSoc*) args;
@@ -91,8 +102,14 @@ void* OpenThreadFunc(void* args){
         if (x == "exit") break;
     }
 
+    delete params;
     return nullptr;
 }
+/**
+ * open the pthread
+ * @param pVoid
+ * @return nothing
+ */
 void* openServerCommand:: OpenThread(void* pVoid) {
     //struct dataToSoc* params=new dataToSoc;
     //params->port=this->port;

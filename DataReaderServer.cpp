@@ -11,7 +11,12 @@
 #include <algorithm>
 
 using namespace std;
-
+/**
+ * create server socket
+ * @param port  port
+ * @param time time
+ * @return no
+ */
 int DataReaderServer:: createSock(double port, double time){
     double portno;
     //struct sockaddr_in serv_addr, cli_addr;
@@ -54,14 +59,14 @@ int DataReaderServer:: createSock(double port, double time){
 
 void DataReaderServer::accept()
 {
-    std::cout << "Waiting for connection..." << endl;
+    //std::cout << "Waiting for connection..." << endl;
     sockaddr_in client_sock;
     int clilen;
     client_sock_fd = ::accept(sock_fd, (struct sockaddr*) &client_sock, (socklen_t *)&clilen);
     if (client_sock_fd < 0) {
-        // TODO error
+        __throw_bad_exception();
     }
-    std::cout << "hi" << std::endl;
+    //std::cout << "hi" << std::endl;
 
 }
 
@@ -72,35 +77,47 @@ string DataReaderServer::readFromSock(){
         ssize_t bytes_read;
         bytes_read = read(this->client_sock_fd, buffer, 999);
         if (bytes_read < 0) {
+            //cout<<"here";
             __throw_bad_exception();
         }   else if (bytes_read == 0)   {
-            // TODO connection closed
+            //connection closed
             int y = 0;
         } else  {
             buffer[bytes_read] = NULL;
-            cout << buffer;
+            //cout << buffer;
         }
 
         vector<double> buffSplit = this->split(buffer);
+        //update the map
         this->setMapPath(buffSplit);
         updateMap();
     }
     return "exit";
 
 }
-
+/**
+ * add Path to map
+ * @param var
+ * @param path
+ */
 void DataReaderServer::addPath(string var,string path){
     (this->mapPath)->insert(pair<string,string>(var,path));
     //this->mapPath[var]=path;
 }
-
+/**
+ * get path from map
+ * @param var
+ * @return
+ */
 string DataReaderServer::getPath(string var) {
     if(this->mapPath->count(var)==1){
         return this->mapPath->at(var);
     }
     return "";
 }
-
+/**
+ * build the map
+ */
 void DataReaderServer::buildMap() {
     this->pathRead.insert(pair<string,double>("/instrumentation/airspeed-indicator/indicated-speed-kt",0));
     this->pathRead.insert(pair<string,double>("/instrumentation/altimeter/indicated-altitude-ft",0));
@@ -123,10 +140,14 @@ void DataReaderServer::buildMap() {
     this->pathRead.insert(pair<string,double>("/controls/flight/elevator",0));
     this->pathRead.insert(pair<string,double>("/controls/flight/rudder",0));
     this->pathRead.insert(pair<string,double>("/controls/flight/flaps",0));
-    this->pathRead.insert(pair<string,double>("/controls/engines/engine/throttle",0));
+    this->pathRead.insert(pair<string,double>("/controls/engines/current-engine/throttle",0));
     this->pathRead.insert(pair<string,double>("/engines/engine/rpm",0));
 }
-
+/**
+ * split the line
+ * @param buff
+ * @return the vector of information
+ */
 vector<double> DataReaderServer::split(string buff) {
     vector<double> info;
 
@@ -181,7 +202,10 @@ vector<double> DataReaderServer::split(string buff) {
     return info;
 }
 
-
+/**
+ * set the map of the path
+ * @param vector1
+ */
 void DataReaderServer::setMapPath(vector<double> vector1) {
 
     this->pathRead.at("/instrumentation/airspeed-indicator/indicated-speed-kt")=vector1[0];
@@ -205,11 +229,13 @@ void DataReaderServer::setMapPath(vector<double> vector1) {
     this->pathRead.at("/controls/flight/elevator")=vector1[18];
     this->pathRead.at("/controls/flight/rudder")=vector1[19];
     this->pathRead.at("/controls/flight/flaps")=vector1[20];
-    this->pathRead.at("/controls/engines/engine/throttle")=vector1[21];
+    this->pathRead.at("/controls/engines/current-engine/throttle")=vector1[21];
     this->pathRead.at("/engines/engine/rpm")=vector1[22];
 
 }
-
+/**
+ * update the Map (using mutex)
+ */
 void DataReaderServer::updateMap() {
 
     pthread_mutex_lock(this->mut);
@@ -227,9 +253,6 @@ void DataReaderServer::updateMap() {
 
 
 }
-
-
-
 
 
 //struct sockaddr_in getSock(){}

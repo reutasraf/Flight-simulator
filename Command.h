@@ -12,7 +12,9 @@
 #include "DataClient.h"
 #include "Dijkstra.h"
 using namespace std;
-
+/**
+ * the "interface" command
+ */
 class Command
 {
 protected:

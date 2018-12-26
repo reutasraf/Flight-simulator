@@ -21,6 +21,7 @@ private:
 
 public:
     virtual int doCommand(vector<vector<string>> vector1, map<string, double> *map1, int index);
+    //constructor
     ExitCommand(DataReaderServer* server5,DataClient* dataClient1,Parser* pars,Dijkstra* dij,pthread_mutex_t *mut)
     :Command(server5,dataClient1,dij,mut){
         this->server = server5;

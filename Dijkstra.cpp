@@ -4,21 +4,16 @@
 
 #include "Dijkstra.h"
 
-/**
- * Ctor - get map values
- * @param var_to_val
- */
+
 Dijkstra::Dijkstra(map<string, double>* var_to_val){
     this->var_to_val = var_to_val;
 }
 
-
-/**
- * find precedence of operators
- * * and / before + and -
- * @param op
- * @return precedence
- */
+ /**
+  * find precedence of operators
+  * @param op + or - or * or /
+  * @return
+  */
 int Dijkstra::precedence(char op) {
     if (op == '+' || op == '-')
         return 1;
@@ -26,16 +21,15 @@ int Dijkstra::precedence(char op) {
         return 2;
     return 0;
 }
-
 /**
- * calculate Expression
- *
- * @param a arg1
- * @param b arg2
- * @param op operator
- * @return arg1 operator arg2
+ * get the values and calculate according to the correct operation
+ * @param a
+ * @param b
+ * @param op + or - or * or /
+ * @return expression
  */
 Expression *Dijkstra::applyOp(double a, double b, char op) {
+
     switch (op) {
         case '+': {
             BinaryExpression *newPlus = new Plus(new Num(a), new Num(b));
@@ -59,38 +53,42 @@ Expression *Dijkstra::applyOp(double a, double b, char op) {
         }
     }
 }
+/**
+ * //free the allocate we create
+ * @param exp
+ */
 void Dijkstra::addToDelete(BinaryExpression* exp){
+    //free the allocate we create
     this->deleteVector.push_back(exp);
 
 }
 
+
 /**
- * returns value of  expression after evaluation.
- * @param tokens string with numbers and operators only
- * @return double
+ * this method returns value of expression after evaluation.
+ * @param tokens
+ * @return
  */
-double Dijkstra::evaluate(string tokens) {
+double Dijkstra::evaluation(string tokens) {
     int i;
-    bool is_op = false; // check for "-" that came after operator
-    // stack to store integer values.
+    // check for "-" that came after operator
+    bool is_op = false;
+
     stack<double> values;
     // stack to store operators.
     stack<char> ops;
-    double is_neg = 1; // to double it in 1 /-1 if needed
+    double is_neg = 1;
     for (i = 0; i < tokens.length(); i++) {
 
-        // Current token is a whitespace,
-        // skip it.
+        // Current token is a whitespace,skip it.
         if (tokens[i] == ' ')
             continue;
 
-            // Current token is an opening
-            // brace, push it to 'ops'
+            // Current token is an openin brace, push it to 'ops'
         else if (tokens[i] == '(') {
             ops.push(tokens[i]);
         }
-            // Current token is a number, push
-            // it to stack for numbers.
+            // Current token is a number, push it to stack for numbers.
         else if (isdigit(tokens[i]) || !is_op) {
             double val = 0;
             double float_num = 10;
@@ -100,8 +98,7 @@ double Dijkstra::evaluate(string tokens) {
                 is_neg = -1;
                 continue;
             }
-            // There may be more than one
-            // digits in number.
+            //more than one digits in number.
             while (i < tokens.length() &&
                    (isdigit(tokens[i]) || tokens[i] == '.')) {
                 if (tokens[i] == '.') {
@@ -117,7 +114,8 @@ double Dijkstra::evaluate(string tokens) {
                 i++;
             }
             is_op = true;
-            val *= is_neg; // -1 if shuold be neg, 1 o.w
+
+            val *= is_neg;
             values.push(val);
             is_neg = 1;
         }
@@ -135,23 +133,20 @@ double Dijkstra::evaluate(string tokens) {
                 // calculate arg1 op arg2
                 values.push(applyOp(val1, val2, op)->calculate());
             }
-            ops.pop(); // pop opening brace.
+            ops.pop();
         }
             // Current token is an operator.
         else {
             is_op = false;
-            /*
-             * While top of 'ops' has same or greater precedence to current token,
-             * which is an operator. Apply operator on top of
-             * 'ops' to top two elements in values stack.
-             */
+             // While top of 'ops' has same or greater precedence to current token,
+             // which is an operator. Apply operator on top of 'ops' to top two elements in values stack.
+
             while (!ops.empty() && precedence(ops.top()) >= precedence(tokens[i])) {
                 // get 2 args
                 double val2 = values.top();
                 values.pop();
                 double val1 = values.top();
                 values.pop();
-                // get op
                 char op = ops.top();
                 ops.pop();
                 // calculate arg1 op arg2
@@ -162,10 +157,7 @@ double Dijkstra::evaluate(string tokens) {
         }
     }
 
-    /*
-     * Entire expression has been parsed at this
-     * point, apply remaining ops to remaining values.
-     */
+
     while (!ops.empty()) {
         // get 2 args
         double val2 = values.top();
@@ -182,11 +174,10 @@ double Dijkstra::evaluate(string tokens) {
     return values.top();
 }
 /**
- * split line to vector by separate sign
- * e.x - splitLine("hey-you-o", v, '-')
- *          --> v = {"hey", "you", "o"}
- * @param line to split
- * @param sign to separte
+ * split the line
+ * @param str
+ * @param sign the sign
+ * @return
  */
 vector<string> Dijkstra::splitLine(const string &str, char sign) {
     stringstream stream(str);
@@ -197,35 +188,29 @@ vector<string> Dijkstra::splitLine(const string &str, char sign) {
     }
     return spaces_split;
 }
-
 /**
- * get string and evaluate it with shunting yard algorithm
- * for char*
- * @param str string
- * @return double - the value after evaluate
+ * it get char* and evaluate it with shunting yard algorithm
+ * @param str
+ * @return the value after evaluating
  */
-double Dijkstra::operator()(char *str) {
+double Dijkstra::toVal(char *str) {
+
     string string_before_evaluate_vars = (string) str;
     return calculate(string_before_evaluate_vars);
 
 }
-
 /**
- * get string and evaluate it with shunting yard algorithm
- * for string
- * @param str string
- * @return double - the value after evaluate
+ * it get string and evaluate it with shunting yard algorithm
+ * @param str
+ * @return the value after evaluating
  */
 double Dijkstra::toVl(string str) {
     return calculate(str);
 }
-
 /**
- * get the string and evalute vars if have
- * send to evaluate in shunting yard algoritm
- * return the value- double
+ * calculate
  * @param string_before_evaluate_vars
- * @return val
+ * @return
  */
 double Dijkstra::calculate(string string_before_evaluate_vars) {
     string string_after_evaluate_vars; // = ""
@@ -248,10 +233,11 @@ double Dijkstra::calculate(string string_before_evaluate_vars) {
             string_after_evaluate_vars +=(space + to_string(val));
         }
     }
-    string_after_evaluate_vars+=space; // add one more whitespace
+    // addmore whitespace
+    string_after_evaluate_vars+=space;
 
-    double result = evaluate(string_after_evaluate_vars);
-    if(result ==(-0)){ // edge case "-0"
+    double result = evaluation(string_after_evaluate_vars);
+    if(result ==(-0)){
         result=0;
     }
     return result;

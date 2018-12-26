@@ -53,6 +53,9 @@ public:
     void stopLoop(){
         this->continueLoop = false;
     }
+    int getSockId(){
+        return this->sock_fd;
+    }
     //struct sockaddr_in getSock();
 
 };

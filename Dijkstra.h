@@ -20,23 +20,20 @@
 using namespace std;
 
 class Dijkstra {
-    map<string,double>* var_to_val;
-    int precedence(char op);
-
-public:
-    Dijkstra(map<string, double>* var_to_val);
 
 
 private:
+    vector<BinaryExpression*> deleteVector;
+    int precedence(char op);
+    map<string,double>* var_to_val;
     Expression* applyOp(double a, double b, char op);
     vector<string> splitLine(const string &str, char sign);
-    vector<BinaryExpression*> deleteVector;
-
     double calculate(string tokens);
-    double evaluate(string tokens);
+    double evaluation(string tokens);
 
 public:
-    double virtual operator()(char* str);
+    Dijkstra(map<string, double>* var_to_val);
+    double virtual toVal(char* str);
     double virtual toVl(string str);
     void addToDelete(BinaryExpression* exp);
     ~Dijkstra(){

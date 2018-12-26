@@ -15,7 +15,11 @@ vector<string> LexerClass::Lexer() {
     string i ="openDataServer 5400 10 connect 127.0.0.1 5402";
     return splitToCommand(i);
 }
-
+/**
+ * split the lines for the commands
+ * @param line
+ * @return data after the split
+ */
 vector<string> LexerClass:: splitToCommand(string line){
 
     vector<string> vecAfterLex;
@@ -73,7 +77,11 @@ vector<string> LexerClass:: splitToCommand(string line){
     }
     return vecAfterLex;
 }
-
+/**
+ * read from the file
+ * @param fileName the name of file
+ * @return
+ */
 vector<vector<string>>  LexerClass:: readFromFile(string fileName){
     string command;
     string line;

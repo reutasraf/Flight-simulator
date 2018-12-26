@@ -3,7 +3,11 @@
 //
 
 #include "Parser.h"
-
+/**
+ *get the lines and do the commands
+ * @param vector1 the information from file
+ * @return
+ */
 int Parser::interpLine(vector<vector<string>> vector1) {
     bool flagExit = false;
     for(int i = 0;i<vector1.size();i++){
@@ -28,9 +32,6 @@ int Parser::interpLine(vector<vector<string>> vector1) {
         }else if(vector1[i][0]=="if"){
             vector<vector<string>> newVec=vector1;
 
-
-            //TODO :
-            //לבדוק אם חותך נכון
             newVec.erase(newVec.begin(),newVec.begin()+i);
             int ind =this->countLoopIf(newVec);
             newVec.erase(newVec.begin()+ind+1,newVec.begin()+newVec.size());
@@ -56,7 +57,11 @@ int Parser::interpLine(vector<vector<string>> vector1) {
     }
     return 1;
 }
-
+/**
+ * cont the line in loop(while) and in if
+ * @param vector1
+ * @return
+ */
 int Parser::countLoopIf(vector<vector<string>> vector1) {
     int breaks = -1;
     int index = 0;

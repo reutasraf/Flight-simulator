@@ -22,7 +22,6 @@ public:
     }
     virtual int doCommand(vector<vector<string>> vector1,map<string, double>* map1,int index);
     bool returnBoolSign(string first,string second,string sign, map<string, double> *map1);
-    void MakeCommandsVectors(vector<string>);
 };
 
 #endif //FLIGHT_WHILECOMMAND_H
